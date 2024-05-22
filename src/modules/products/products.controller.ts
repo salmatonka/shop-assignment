@@ -205,10 +205,10 @@ const searchProduct = async (req: Request, res: Response) => {
       message: "Products matching search term fetched successfully!",
       data: result,
     });
-  } catch (err) {
+  } catch (err:any) {
     res.status(500).json({
       success: false,
-      message: "Could not match product!",
+      message: err.message || "Could not match product!",
       error: err,
     });
   }

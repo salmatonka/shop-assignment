@@ -1,13 +1,19 @@
 import { Request, Response } from "express";
-import { orderValidationSchema } from "./order.validation";
 import { OrderServices } from "./order.service";
+import { orderValidationSchema } from "./order.validation";
 
 const createOrder = async (req: Request, res: Response) => {
   try {
     const { order: ordertData } = req.body;
 
     const result = await OrderServices.createOrderIntoDB(ordertData);
-    // return result;
+    
+    const { error } = orderValidationSchema.validate(req.body);
+    if (error) {
+      return res
+        .status(400)
+        .json({ success: false, message: error.details[0].message });
+    }
     if (result) {
       res.status(200).send({
         success: true,
@@ -21,10 +27,10 @@ const createOrder = async (req: Request, res: Response) => {
         result,
       });
     }
-  } catch (err: any) {
+  } catch (err) {
     res.status(400).send({
       success: false,
-      message: err.message || "Something is wrong",
+      message: "Something is wrong",
       error: err,
     });
   }
@@ -48,10 +54,10 @@ const getAllOrders = async (req: Request, res: Response) => {
         data: result,
       });
     }
-  } catch (err: any) {
+  } catch (err) {
     res.status(400).send({
       success: false,
-      message: err.message || "Something is wrong",
+      message:  "Something is wrong",
       error: err,
     });
   }

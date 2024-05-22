@@ -74,29 +74,25 @@ const productSchema = new Schema<TProduct, ProductModel>({
   },
 });
 
-// pre save middleware/ hook : will work on create()  save()
-// productSchema.pre('save', async function (next) {
-//   console.log(this, 'pre hook : we will save  data');
-//   // eslint-disable-next-line @typescript-eslint/no-this-alias
-//   // const user = this; // doc
-//   // hashing password and save into DB
-//   // user.password = await bcrypt.hash(
-//   //   user.password,
-//   //   Number(config.bcrypt_salt_rounds),
-//   // );
-//   next();
-// });
+// pre save middleware/ hook 
+productSchema.pre('save', async function (next) {
+  // console.log(this, 'pre hook : we will save  data');
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this; // doc
+  
+  next();
+});
 
 // post save middleware / hook
-// productSchema.post('save', function (doc, next) {
-//   console.log(this, 'post hook : we will save  data');
-//   // doc.password = '';
-//   next();
-// });
+productSchema.post('save', function (doc, next) {
+  // console.log(this, 'post hook : we will save  data');
+  
+  next();
+});
 
 //creating a custom static method
-productSchema.statics.isUserExists = async function (id: string) {
-  const existingUser = await Product.findOne({ id });
+productSchema.statics.isUserExists = async function (productId: string) {
+  const existingUser = await Product.findOne({ productId });
   return existingUser;
 };
 

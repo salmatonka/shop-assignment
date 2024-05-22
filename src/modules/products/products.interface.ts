@@ -22,15 +22,6 @@ export type TProduct = {
 //for creating static
 
 export interface ProductModel extends Model<TProduct> {
-  isUserExists(id: string): Promise<TProduct | null>;
+  isUserExists(productId: string): Promise<TProduct | null>;
 }
 
-// export type ProductMethods = {
-//   isUserExists( id:string ) : Promise<TProduct | null>;
-// };
-
-// export type ProductModel = Model<
-// TProduct,
-// Record<string,never>,
-// ProductMethods
-// >;

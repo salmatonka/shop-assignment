@@ -42,7 +42,7 @@ const deleteAllProductsFromDB = async () => {
 
 const searchProductFromDB = async (query: object) => {
   const result = await Product.find(query);
-  console.log(result);
+  // console.log(result);
   return result;
 };
 
