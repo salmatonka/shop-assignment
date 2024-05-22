@@ -9,31 +9,34 @@ const createProductIntoDB = async (productData: TProduct) => {
   const result = await Product.create(productData);
   return result;
 
-  // const result = await product.save(); //build in method
 };
 
 const getAllProductsFromDB = async () => {
-  const result = await Product.find();
+  const result = await Product.find({});
   return result;
 };
 
-const getSingleProductFromDB = async (id: string) => {
-  const result = await Product.findById(id);
+const getSingleProductFromDB = async (productId: string) => {
+  const result = await Product.findById(productId).select({ __v: 0 });
   return result;
 };
 
-const updateProductFromDB = async (_id: string) => {
-  if (await Product.isUserExists(_id)) {
-    throw new Error("User already exists!");
-  }
-  const result = await Product.findByIdAndUpdate({ _id });
+const updateProductFromDB = async (productId: string,product: Partial<TProduct>) => {
+  const result = await Product.findByIdAndUpdate(productId, product, {
+    new: true,
+  }).select({ __v: 0 })
   return result;
 };
 
-const deleteProductFromDB = async (_id: string) => {
-  const result = await Product.deleteOne({ _id });
+const deleteByProductIdFromDB = async (productId: string) => {
+  const result = await Product.findByIdAndDelete(productId).select({ __v: 0,})
   return result;
 };
+
+const deleteAllProductsFromDB = async () => {
+  const result = await Product.deleteMany({})
+  return result
+}
 
 const searchProductFromDB = async (query: object) => {
   const result = await Product.find(query);
@@ -41,11 +44,15 @@ const searchProductFromDB = async (query: object) => {
   return result;
 };
 
+
+
+
 export const ProductServices = {
   createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
-  deleteProductFromDB,
+  deleteByProductIdFromDB,
   updateProductFromDB,
+  deleteAllProductsFromDB,
   searchProductFromDB,
 };
