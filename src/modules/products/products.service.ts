@@ -10,8 +10,19 @@ const createProductIntoDB = async (productData: TProduct) => {
   return result;
 };
 
-const getAllProductsFromDB = async () => {
-  const result = await Product.find({});
+const getAllProductsFromDB = async (searchTerm: string) => {
+  let find = {}
+  
+  if(searchTerm!=undefined && searchTerm != ''){
+    find = {
+      $or: [
+        { name: { $regex: new RegExp(searchTerm, "i") } },
+        { category: { $regex: new RegExp(searchTerm, "i") } },
+        { description: { $regex: new RegExp(searchTerm, "i") } },
+      ],
+    }
+  }
+  const result = await Product.find(find);
   return result;
 };
 
@@ -24,9 +35,7 @@ const updateProductFromDB = async (
   productId: string,
   product: Partial<TProduct>,
 ) => {
-  const result = await Product.findByIdAndUpdate(productId, product, {
-    new: true,
-  }).select({ __v: 0 });
+  const result = await Product.findByIdAndUpdate(productId, product, {new: true,}).select({ __v: 0 });
   return result;
 };
 
@@ -40,11 +49,7 @@ const deleteAllProductsFromDB = async () => {
   return result;
 };
 
-const searchProductFromDB = async (query: object) => {
-  const result = await Product.find(query);
-  // console.log(result);
-  return result;
-};
+
 
 export const ProductServices = {
   createProductIntoDB,
@@ -52,6 +57,5 @@ export const ProductServices = {
   getSingleProductFromDB,
   deleteByProductIdFromDB,
   updateProductFromDB,
-  deleteAllProductsFromDB,
-  searchProductFromDB,
-};
+  deleteAllProductsFromDB
+}

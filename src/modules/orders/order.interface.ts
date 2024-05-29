@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+// import { Model } from "mongoose";
 
 export type TOrder = {
   email: string;
@@ -7,6 +7,6 @@ export type TOrder = {
   quantity: number;
 };
 
-export interface OrderModel extends Model<TOrder> {
-  isUserExists(productId: string): Promise<TOrder | null>;
-}
+// export interface OrderModel extends Model<TOrder> {
+//   isUserExists(productId: string): Promise<TOrder | null>;
+// }

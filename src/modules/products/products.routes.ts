@@ -9,6 +9,5 @@ router.get("/:productId", ProductContrallers.getSingleProduct);
 router.put("/:productId", ProductContrallers.updateProduct);
 router.delete("/:productId", ProductContrallers.deleteProduct);
 router.delete("/", ProductContrallers.deleteAllProducts);
-router.get("/search", ProductContrallers.searchProduct);
 
 export const ProductRoutes = router;

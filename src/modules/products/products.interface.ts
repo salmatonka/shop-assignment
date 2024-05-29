@@ -4,10 +4,10 @@ export type TVariants = {
   type: string;
   value: string;
 };
-export type TInventory = {
-  quantity: number;
-  inStock?: boolean;
-};
+// export type TInventory = {
+//   quantity: number;
+//   inStock?: boolean;
+// };
 export type TProduct = {
   // id: string;
   name: string;
@@ -16,7 +16,7 @@ export type TProduct = {
   category: string;
   tags: string[];
   variants: [TVariants];
-  inventory: [TInventory];
+  inventory: { quantity: number; inStock: boolean };
 };
 
 //for creating static

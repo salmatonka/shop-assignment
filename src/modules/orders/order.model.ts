@@ -21,29 +21,31 @@ const orderSchema = new Schema<TOrder>({
    },
 })
 
+
 //Middleware for decrease the product quantity after an order place
 orderSchema.pre<TOrder>('save', async function (next) {
   try {
     const product = await Product.findById(this.productId)
-    // if (product) {
-    //   if (
-    //     product.inventory?.quantity > 0 &&
-    //     product.inventory?.quantity >= this.quantity
-    //   ) {
-    //     // Decrease the product quantity
-    //     product.inventory.quantity -= this.quantity
-    //     // Update inStock status if the quantity becomes 0
-    //     if (product.inventory.quantity === 0) {
-    //       product.inventory.inStock = false
-    //     }
-    //     product.save()
-    //     next()
-    //   } else {
-    //     throw new Error('Insufficient quantity available in inventory')
-    //   }
-    // } else {
-    //   throw new Error('Product not found')
-    // }
+    
+    if (product) {
+      if (
+        product.inventory?.quantity > 0 &&
+        product.inventory?.quantity >= this.quantity
+      ) {
+        // Decrease the product quantity
+        product.inventory.quantity -= this.quantity
+        // Update inStock status if the quantity becomes 0
+        if (product.inventory.quantity === 0) {
+          product.inventory.inStock = false
+        }
+        product.save()
+        next()
+      } else {
+        throw new Error('Insufficient quantity available in inventory')
+      }
+    } else {
+      throw new Error('Product not found')
+    }
   } catch (err: any) {
     next(err)
   }

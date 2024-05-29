@@ -6,10 +6,10 @@ interface Variants {
   value: string;
 }
 
-interface Inventory {
-  quantity: number;
-  inStock: boolean;
-}
+// interface Inventory {
+//   quantity: number;
+//   inStock: boolean;
+// }
 
 interface Product {
   name: string;
@@ -18,7 +18,7 @@ interface Product {
   category: string;
   tags: string[];
   variants: [Variants];
-  inventory: [Inventory];
+  inventory: { quantity: number; inStock: boolean };
 }
 
 const variantSchema = new Schema<Variants>({
@@ -32,16 +32,16 @@ const variantSchema = new Schema<Variants>({
   },
 });
 
-const inventorySchema = new Schema<Inventory>({
-  quantity: {
-    type: Number,
-    default: 0,
-  },
-  inStock: {
-    type: Boolean,
-    default: false,
-  },
-});
+// const inventorySchema = new Schema<Inventory>({
+//   quantity: {
+//     type: Number,
+//     default: 0,
+//   },
+//   inStock: {
+//     type: Boolean,
+//     default: false,
+//   },
+// });
 
 const productSchema = new Schema<TProduct, ProductModel>({
   name: {
@@ -54,7 +54,7 @@ const productSchema = new Schema<TProduct, ProductModel>({
   },
   price: {
     type: Number,
-    default: 0,
+    required: [true, "Description is required"],
   },
   category: {
     type: String,
@@ -69,8 +69,8 @@ const productSchema = new Schema<TProduct, ProductModel>({
     required: [true, "Variants is required"],
   },
   inventory: {
-    type: [inventorySchema],
-    required: [true, "Inventory is required"],
+    quantity: { type: Number, required: true },
+    inStock: { type: Boolean, required: true },
   },
 });
 

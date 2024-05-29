@@ -2,18 +2,17 @@ import { Request, Response } from "express";
 import { OrderServices } from "./order.service";
 import { orderValidationSchema } from "./order.validation";
 
-const createOrder = async (req: Request, res: Response) => {
-  try {
-    const { order: ordertData } = req.body;
 
-    const result = await OrderServices.createOrderIntoDB(ordertData);
-    
-    const { error } = orderValidationSchema.validate(req.body);
-    if (error) {
-      return res
-        .status(400)
-        .json({ success: false, message: error.details[0].message });
-    }
+const createOrder = async (req: Request, res: Response) => {
+  const { orders: ordertData } = req.body;
+  console.log( ordertData);
+
+  try {
+
+    const  {value,}  = orderValidationSchema.validate(ordertData);
+    const result = await OrderServices.createOrderIntoDB(value);
+
+
     if (result) {
       res.status(200).send({
         success: true,
@@ -27,7 +26,7 @@ const createOrder = async (req: Request, res: Response) => {
         result,
       });
     }
-  } catch (err) {
+  } catch (err: any) {
     res.status(400).send({
       success: false,
       message: "Something is wrong",
@@ -57,7 +56,7 @@ const getAllOrders = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(400).send({
       success: false,
-      message:  "Something is wrong",
+      message: "Something is wrong",
       error: err,
     });
   }

@@ -39,8 +39,20 @@ const createProduct = async (req: Request, res: Response) => {
 };
 
 const getAllProducts = async (req: Request, res: Response) => {
+  const {searchTerm} = req.query
   try {
-    const result = await ProductServices.getAllProductsFromDB();
+    
+    const result = await ProductServices.getAllProductsFromDB(searchTerm as string);
+
+    if (searchTerm) {
+      res.status(200).send({
+        success: true,
+        message: `Products matching search term ${searchTerm} fetched successfully!`,
+        data:result,
+      })
+      return
+    }
+    
 
     if (result) {
       res.status(200).send({
@@ -65,14 +77,10 @@ const getAllProducts = async (req: Request, res: Response) => {
 };
 
 const getSingleProduct = async (req: Request, res: Response) => {
+  const { productId } = req.params;
   try {
-    const { productId } = req.params;
-    const { error } = productValidationSchema.validate(req.body);
-    if (error) {
-      return res
-        .status(400)
-        .json({ success: false, message: error.details[0].message });
-    }
+    
+    
     const result = await ProductServices.getSingleProductFromDB(productId);
 
     if (result) {
@@ -192,27 +200,7 @@ const deleteAllProducts = async (req: Request, res: Response) => {
   }
 };
 
-//todo
-const searchProduct = async (req: Request, res: Response) => {
-  try {
-    const { searchTerm } = req.query;
-    const result = await ProductServices.searchProductFromDB({
-      name: { $regex: searchTerm, $options: "i" },
-    });
 
-    res.status(200).json({
-      success: true,
-      message: "Products matching search term fetched successfully!",
-      data: result,
-    });
-  } catch (err:any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || "Could not match product!",
-      error: err,
-    });
-  }
-};
 
 export const ProductContrallers = {
   createProduct,
@@ -220,6 +208,5 @@ export const ProductContrallers = {
   getSingleProduct,
   deleteProduct,
   deleteAllProducts,
-  updateProduct,
-  searchProduct,
+  updateProduct
 };
