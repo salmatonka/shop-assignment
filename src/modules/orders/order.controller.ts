@@ -61,39 +61,40 @@ const getAllOrders = async (req: Request, res: Response) => {
     });
   }
 };
-const deleteProduct = async (req: Request, res: Response) => {
-  try {
-    const { orderId } = req.params;
 
-    const result = await OrderServices.deleteByorderIdFromDB(orderId);
+// const deleteProduct = async (req: Request, res: Response) => {
+//   try {
+//     const { orderId } = req.params;
 
-    if (result) {
-      res.status(200).send({
-        success: true,
-        message: "Order deleted successfully!",
-        data: result,
-      });
-    } else {
-      res.status(400).send({
-        success: false,
-        message: "Order not found to delete!",
-        data: result,
-      });
-    }
-  } catch (err: any) {
-    res.status(400).send({
-      success: false,
-      message: err.message || "Something is wrong",
-      error: err,
-    });
-  }
-};
+//     const result = await OrderServices.deleteByorderIdFromDB(orderId);
+
+//     if (result) {
+//       res.status(200).send({
+//         success: true,
+//         message: "Order deleted successfully!",
+//         data: result,
+//       });
+//     } else {
+//       res.status(400).send({
+//         success: false,
+//         message: "Order not found to delete!",
+//         data: result,
+//       });
+//     }
+//   } catch (err: any) {
+//     res.status(400).send({
+//       success: false,
+//       message: err.message || "Something is wrong",
+//       error: err,
+//     });
+//   }
+// };
 
 
 export const OrderControllers = {
   createOrder,
   getAllOrders,
-  deleteProduct
+  // deleteProduct
 };
 
 // https://shop-assignment-atdxtd7ah-salmatonkas-projects.vercel.app

@@ -14,13 +14,13 @@ const getAllOrdersFromDB = async (email: string) => {
   const result = await Order.find({});
   return result;
 };
-const deleteByorderIdFromDB = async (orderId: string) => {
-  const result = await Order.findByIdAndDelete(orderId).select({ __v: 0 });
-  return result;
-};
+// const deleteByorderIdFromDB = async (orderId: string) => {
+//   const result = await Order.findByIdAndDelete(orderId).select({ __v: 0 });
+//   return result;
+// };
 
 export const OrderServices = {
   createOrderIntoDB,
   getAllOrdersFromDB,
-  deleteByorderIdFromDB
+  // deleteByorderIdFromDB
 };
