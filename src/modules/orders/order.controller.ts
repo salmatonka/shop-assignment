@@ -5,12 +5,20 @@ import { orderValidationSchema } from "./order.validation";
 
 const createOrder = async (req: Request, res: Response) => {
   const { orders: ordertData } = req.body;
-  console.log( ordertData);
+  // console.log(ordertData);
 
   try {
 
-    const  {value,}  = orderValidationSchema.validate(ordertData);
+    const { value } = orderValidationSchema.validate(ordertData);
+    console.log(value)
     const result = await OrderServices.createOrderIntoDB(value);
+    
+
+  //   const { error } = orderValidationSchema.validate(ordertData);
+  //  const result = await OrderServices.createOrderIntoDB(ordertData);
+    
+
+
 
 
     if (result) {
@@ -62,39 +70,11 @@ const getAllOrders = async (req: Request, res: Response) => {
   }
 };
 
-// const deleteProduct = async (req: Request, res: Response) => {
-//   try {
-//     const { orderId } = req.params;
-
-//     const result = await OrderServices.deleteByorderIdFromDB(orderId);
-
-//     if (result) {
-//       res.status(200).send({
-//         success: true,
-//         message: "Order deleted successfully!",
-//         data: result,
-//       });
-//     } else {
-//       res.status(400).send({
-//         success: false,
-//         message: "Order not found to delete!",
-//         data: result,
-//       });
-//     }
-//   } catch (err: any) {
-//     res.status(400).send({
-//       success: false,
-//       message: err.message || "Something is wrong",
-//       error: err,
-//     });
-//   }
-// };
 
 
 export const OrderControllers = {
   createOrder,
-  getAllOrders,
-  // deleteProduct
+  getAllOrders
 };
 
-// https://shop-assignment-atdxtd7ah-salmatonkas-projects.vercel.app
+
